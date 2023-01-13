@@ -1,0 +1,130 @@
+<?php
+
+use Drupal\Component\Utility\Html;
+use TencentCloud\Common\Credential;
+use TencentCloud\Common\Profile\ClientProfile;
+use TencentCloud\Common\Profile\HttpProfile;
+use TencentCloud\Common\Exception\TencentCloudSDKException;
+use TencentCloud\Captcha\V20190722\CaptchaClient;
+use TencentCloud\Captcha\V20190722\Models\DescribeCaptchaResultRequest;
+
+/**
+ * Implements hook_uninstall().
+ */
+function tencentcloud_captcha_uninstall($is_syncing)
+{
+  \Drupal::configFactory()->getEditable('tencentcloud_captcha.settings')->delete();
+}
+
+/**
+ * Implements hook_captcha().
+ */
+function tencentcloud_captcha_captcha($op, $captcha_type = '')
+{
+  if ( $op != 'generate' ) {
+    return ['tencentcloud_captcha'];
+  }
+
+  if ( $captcha_type != 'tencentcloud_captcha' ) {
+    return captcha_captcha('generate', 'Math');
+  }
+  $captcha = [];
+  $config = \Drupal::config('tencentcloud_captcha.settings');
+  $app_id = $config->get('app_id');
+  $app_secret_key = $config->get('app_secret_key');
+  if (empty($app_id) || empty($app_secret_key) ) {
+    $captcha = captcha_captcha('generate', 'Math');
+    return $captcha;
+  }
+  $captcha['solution'] = TRUE;
+  $captcha['captcha_validate'] = 'tencentcloud_captcha_captcha_validation';
+  $captcha['form']['captcha_response'][] = [
+    '#type' => 'button',
+    '#cache' => ['max-age' => 0],
+    '#value' => t("I'm not a robot"),
+    '#executes_submit_callback' => FALSE,
+    '#attributes' => [
+      'id' => Html::getUniqueId('tencentcloud-captcha'),
+      'class' => ['btn', 'btn-primary'],
+      'data-app-id' => $app_id
+    ],
+    '#attached' => [
+      'library' => [
+        'tencentcloud_captcha/tencentcloud_captcha_prepare',
+        'tencentcloud_captcha/tencentcloud_captcha',
+        'tencentcloud_captcha/tencentcloud_captcha_actions',
+      ],
+    ],
+  ];
+  $captcha['form']['captcha_response'][] = [
+    '#type' => 'hidden',
+    '#value' => '',
+    '#name' => 'captcha_randstr',
+    '#cache' => ['max-age' => 0],
+    '#attributes' => [
+      'id' => Html::getUniqueId('captcha-randstr'),
+    ],
+  ];
+  $captcha['form']['captcha_response'][] = [
+    '#type' => 'hidden',
+    '#value' => '',
+    '#name' => 'captcha_ticket',
+    '#cache' => ['max-age' => 0],
+    '#attributes' => [
+      'id' => Html::getUniqueId('captcha-ticket'),
+    ],
+  ];
+
+  $captcha['cacheable'] = FALSE;
+  \Drupal::service('page_cache_kill_switch')->trigger();
+  return $captcha;
+}
+
+/**
+ * CAPTCHA Callback;
+ */
+function tencentcloud_captcha_captcha_validation($solution, $response, $element, $form_state)
+{
+  $dir = __DIR__ . DIRECTORY_SEPARATOR;
+  require $dir . 'vendor/autoload.php';
+  $config = \Drupal::config('tencentcloud_captcha.settings');
+  $secret_id = $config->get('secret_id');
+  $secret_key = $config->get('secret_key');
+  $app_id = (int)$config->get('app_id');
+  $app_secret_key = $config->get('app_secret_key');
+  $request = \Drupal::request();
+  $ip = $request->getClientIp();
+  $ticket = $request->request->get('captcha_ticket', '');
+  $randstr = $request->request->get('captcha_randstr', '');
+
+  try {
+    $cred = new Credential($secret_id, $secret_key);
+    $httpProfile = new HttpProfile();
+    $httpProfile->setEndpoint("captcha.tencentcloudapi.com");
+
+    $clientProfile = new ClientProfile();
+    $clientProfile->setHttpProfile($httpProfile);
+    $client = new CaptchaClient($cred, "", $clientProfile);
+
+    $req = new DescribeCaptchaResultRequest();
+
+    $params = array(
+      "CaptchaType" => 9,
+      "Ticket" => $ticket,
+      "UserIp" => $ip,
+      "Randstr" => $randstr,
+      "CaptchaAppId" => $app_id,
+      "AppSecretKey" => $app_secret_key
+    );
+    $req->fromJsonString(\json_encode($params));
+    $resp = $client->DescribeCaptchaResult($req);
+    if ( $resp->getCaptchaCode() === 1 ) {
+      return true;
+    }
+    $form_state->setErrorByName('captcha_response', 'Captcha validation failed');
+    return false;
+  } catch (TencentCloudSDKException $e) {
+    $form_state->setErrorByName('captcha_response', 'Captcha validation failed');
+    return false;
+  }
+}

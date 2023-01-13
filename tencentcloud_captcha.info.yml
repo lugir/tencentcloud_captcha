@@ -1,0 +1,9 @@
+name: 'TencentCloud Captcha'
+type: module
+description: 'Integrate TencentCloud Captcha'
+package: Spam control
+core_version_requirement: ^9.3 || ^10
+configure: tencentcloud_captcha.settings_form
+dependencies:
+  - captcha:captcha
+

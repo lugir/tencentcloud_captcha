@@ -1,0 +1,16 @@
+tencentcloud_captcha:
+  version: 1.0
+  header: true
+  js:
+    https://ssl.captcha.qq.com/TCaptcha.js: { type: extrenal, minified: true }
+
+tencentcloud_captcha_prepare:
+  header: true
+  js:
+    js/prepare.js: { }
+
+tencentcloud_captcha_actions:
+  js:
+    js/actions.js: { }
+  dependencies:
+    - core/drupal
