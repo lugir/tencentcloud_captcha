@@ -4,33 +4,30 @@ namespace Drupal\tencentcloud_captcha\Form;
 
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+
 /**
  * Configure Tencentcloud Captcha settings.
  */
-class TencentcloudCaptchaSettingsForm extends ConfigFormBase
-{
+class TencentcloudCaptchaSettingsForm extends ConfigFormBase {
 
   /**
    * {@inheritdoc}
    */
-  public function getFormId()
-  {
+  public function getFormId() {
     return 'tencentcloud_captcha_settings';
   }
 
   /**
    * {@inheritdoc}
    */
-  protected function getEditableConfigNames()
-  {
+  protected function getEditableConfigNames() {
     return ['tencentcloud_captcha.settings'];
   }
 
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state)
-  {
+  public function buildForm(array $form, FormStateInterface $form_state) {
     $config = $this->config('tencentcloud_captcha.settings');
 
     \Drupal::moduleHandler()->loadInclude('captcha', 'inc');
@@ -38,49 +35,65 @@ class TencentcloudCaptchaSettingsForm extends ConfigFormBase
     $form['general'] = [
       '#type' => 'details',
       '#title' => 'General',
-      '#open' => true,
+      '#open' => TRUE,
     ];
 
     $form['general']['secret_id'] = [
       '#title' => 'Secret Id',
-      '#description' => $this->t('Get or create @item from <a href="@url" target="_blank">@name</a>', ['@item' => 'Secret Id', '@url' => 'https://console.cloud.tencent.com/cam/capi', '@name' => 'Tencent Cloud Captcha']),
+      '#description' => $this->t('Get or create @item from <a href="@url" target="_blank">@name</a>', [
+        '@item' => 'Secret Id',
+        '@url' => 'https://console.cloud.tencent.com/cam/capi',
+        '@name' => 'Tencent Cloud Captcha',
+      ]),
       '#type' => 'textfield',
       '#maxlength' => 40,
-      '#required' => true,
+      '#required' => TRUE,
       '#default_value' => $config->get('secret_id'),
     ];
 
     $form['general']['secret_key'] = [
       '#title' => 'Secret key',
-      '#description' => $this->t('Get or create @item from <a href="@url" target="_blank">@name</a>', ['@item' => 'Secret key', '@url' => 'https://console.cloud.tencent.com/cam/capi', '@name' => 'Tencent Cloud Captcha']),
+      '#description' => $this->t('Get or create @item from <a href="@url" target="_blank">@name</a>', [
+        '@item' => 'Secret key',
+        '@url' => 'https://console.cloud.tencent.com/cam/capi',
+        '@name' => 'Tencent Cloud Captcha',
+      ]),
       '#type' => 'textfield',
       '#maxlength' => 40,
-      '#required' => true,
+      '#required' => TRUE,
       '#default_value' => $config->get('app_secret_key'),
     ];
 
     $form['general']['app_id'] = [
       '#title' => 'CaptchaAppId',
-      '#description' => $this->t('Get or create @item from <a href="@url" target="_blank">@name</a>', ['@item' => 'CaptchaAppId', '@url' => 'https://console.cloud.tencent.com/captcha/graphical', '@name' => 'Tencent Cloud Captcha']),
+      '#description' => $this->t('Get or create @item from <a href="@url" target="_blank">@name</a>', [
+        '@item' => 'CaptchaAppId',
+        '@url' => 'https://console.cloud.tencent.com/captcha/graphical',
+        '@name' => 'Tencent Cloud Captcha',
+      ]),
       '#type' => 'textfield',
       '#maxlength' => 40,
-      '#required' => true,
+      '#required' => TRUE,
       '#default_value' => $config->get('app_id'),
     ];
 
     $form['general']['app_secret_key'] = [
       '#title' => 'AppSecretKey',
-      '#description' => $this->t('Get or create @item from <a href="@url" target="_blank">@name</a>', ['@item' => 'AppSecretKey', '@url' => 'https://console.cloud.tencent.com/captcha/graphical', '@name' => 'Tencent Cloud Captcha']),
+      '#description' => $this->t('Get or create @item from <a href="@url" target="_blank">@name</a>', [
+        '@item' => 'AppSecretKey',
+        '@url' => 'https://console.cloud.tencent.com/captcha/graphical',
+        '@name' => 'Tencent Cloud Captcha',
+      ]),
       '#type' => 'textfield',
       '#maxlength' => 40,
-      '#required' => true,
+      '#required' => TRUE,
       '#default_value' => $config->get('app_secret_key'),
     ];
 
     $form['captcha_point'] = [
       '#type' => 'details',
       '#title' => $this->t('Form protection'),
-      '#open' => true,
+      '#open' => TRUE,
     ];
 
     $form['captcha_point']['user_login_form'] = [
@@ -107,8 +120,7 @@ class TencentcloudCaptchaSettingsForm extends ConfigFormBase
   /**
    * {@inheritdoc}
    */
-  public function submitForm(array &$form, FormStateInterface $form_state)
-  {
+  public function submitForm(array &$form, FormStateInterface $form_state) {
     \Drupal::moduleHandler()->loadInclude('captcha', 'inc');
     $secret_id = $form_state->getValue('secret_id');
     $secret_key = $form_state->getValue('secret_key');
@@ -135,4 +147,5 @@ class TencentcloudCaptchaSettingsForm extends ConfigFormBase
     $user_pass->setCaptchaType('tencentcloud_captcha/tencentcloud_captcha');
     $user_pass->setStatus($form_state->getValue('user_pass'))->save();
   }
+
 }
