@@ -2,6 +2,10 @@
     "name": "drupal/tencentcloud",
     "description": "Integrate Tencent Cloud Captcha.",
     "type": "drupal-module",
+    "support": {
+        "homepage": "https://www.drupal.org/project/tencentcloud_captcha",
+        "issues": "https://www.drupal.org/project/issues/tencentcloud_captcha"
+    },
     "require": {
         "drupal/captcha": "^1.9",
         "tencentcloud/captcha": "^3.0"
