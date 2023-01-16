@@ -39,11 +39,11 @@ class TencentcloudCaptchaSettingsForm extends ConfigFormBase {
     ];
 
     $form['general']['secret_id'] = [
-      '#title' => 'Secret Id',
+      '#title' => 'SecretId',
       '#description' => $this->t('Get or create @item from <a href="@url" target="_blank">@name</a>', [
-        '@item' => 'Secret Id',
+        '@item' => 'SecretId',
         '@url' => 'https://console.cloud.tencent.com/cam/capi',
-        '@name' => 'Tencent Cloud Captcha',
+        '@name' => 'Tencent Cloud',
       ]),
       '#type' => 'textfield',
       '#maxlength' => 40,
@@ -52,11 +52,11 @@ class TencentcloudCaptchaSettingsForm extends ConfigFormBase {
     ];
 
     $form['general']['secret_key'] = [
-      '#title' => 'Secret key',
+      '#title' => 'SecretKey',
       '#description' => $this->t('Get or create @item from <a href="@url" target="_blank">@name</a>', [
-        '@item' => 'Secret key',
+        '@item' => 'SecretKey',
         '@url' => 'https://console.cloud.tencent.com/cam/capi',
-        '@name' => 'Tencent Cloud Captcha',
+        '@name' => 'Tencent Cloud',
       ]),
       '#type' => 'textfield',
       '#maxlength' => 40,
