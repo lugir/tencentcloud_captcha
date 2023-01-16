@@ -8,7 +8,7 @@ use Drupal\Core\Form\FormStateInterface;
 /**
  * Configure Tencentcloud Captcha settings.
  */
-class TencentcloudCaptchaSettingsForm extends ConfigFormBase {
+class SettingsForm extends ConfigFormBase {
 
   /**
    * {@inheritdoc}
@@ -61,7 +61,7 @@ class TencentcloudCaptchaSettingsForm extends ConfigFormBase {
       '#type' => 'textfield',
       '#maxlength' => 40,
       '#required' => TRUE,
-      '#default_value' => $config->get('app_secret_key'),
+      '#default_value' => $config->get('secret_key'),
     ];
 
     $form['general']['app_id'] = [

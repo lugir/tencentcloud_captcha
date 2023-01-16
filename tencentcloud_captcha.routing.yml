@@ -1,7 +1,7 @@
 tencentcloud_captcha.settings_form:
   path: '/admin/config/people/captcha/tencentcloud_captcha'
   defaults:
-    _form: '\Drupal\tencentcloud_captcha\Form\TencentcloudCaptchaSettingsForm'
+    _form: '\Drupal\tencentcloud_captcha\Form\SettingsForm'
     _title: 'TencentCloud Captcha'
   requirements:
     _permission: 'administer CAPTCHA settings'
