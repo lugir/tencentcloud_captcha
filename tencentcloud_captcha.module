@@ -114,9 +114,10 @@ function tencentcloud_captcha_captcha_validation($solution, $response, $element,
     $req->fromJsonString(\json_encode($params));
     $resp = $client->DescribeCaptchaResult($req);
     if ($resp->getCaptchaCode() === 1) {
+      \Drupal::logger('tencentcloud_captcha')->notice('Captcha request message: @message', ['@message' => $resp->getCaptchaMsg()]);
       return TRUE;
     }
-    \Drupal::logger('tencentcloud_captcha')->error('Captcha result message: @message', ['@message' => $resp->getCaptchaMsg()]);
+    \Drupal::logger('tencentcloud_captcha')->error('Captcha request message: @message', ['@message' => $resp->getCaptchaMsg()]);
     $form_state->setErrorByName('captcha_response', 'Captcha validation failed');
     return TRUE;
   }
