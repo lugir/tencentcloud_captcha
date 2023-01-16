@@ -7,7 +7,7 @@
         "issues": "https://www.drupal.org/project/issues/tencentcloud_captcha"
     },
     "require": {
-        "drupal/captcha": "^1.9",
+        "drupal/captcha": "^1",
         "tencentcloud/captcha": "^3.0"
     }
 }
