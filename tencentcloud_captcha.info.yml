@@ -6,4 +6,3 @@ core_version_requirement: ^9.3 || ^10
 configure: tencentcloud_captcha.settings_form
 dependencies:
   - captcha:captcha
-

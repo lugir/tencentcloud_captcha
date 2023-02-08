@@ -1,8 +1,11 @@
 ## Introduction
 
-Integrate [Tencent Cloud Captcha](https://cloud.tencent.com/product/captcha) services with Captcha module to protect Drupal with great captcha experiences.
+Integrate [Tencent Cloud Captcha](https://cloud.tencent.com/product/captcha)
+services with Captcha module to protect Drupal with great captcha experiences.
 
-For **Drupal 8.x** version: Some original works of this module can be found at [Tencent-Cloud-Plugins/tencentcloud-drupal-plugin-captcha](https://github.com/Tencent-Cloud-Plugins/tencentcloud-drupal-plugin-captcha), which might work with Drupal 8 and early versions of Drupal 9.
+For **Drupal 8.x** version: Some original works of this module can be found at
+[Tencent-Cloud-Plugins/tencentcloud-drupal-plugin-captcha](https://github.com/Tencent-Cloud-Plugins/tencentcloud-drupal-plugin-captcha),
+which might work with Drupal 8 and early versions of Drupal 9.
 
 For a full description of the module, visit the
 [project page](https://www.drupal.org/project/tencentcloud_captcha).
@@ -12,7 +15,8 @@ Submit bug reports and feature suggestions, or track changes in the
 
 ## Requirements
 
-Following module and package will be included automaticlly when installed with composer.
+Following module and package will be included automaticlly when installed with
+composer.
 
 - [Captcha](https://www.drupal.org/project/captcha) module.
 - [tencentcloud/captcha:^3.0](https://github.com/tencentcloud-sdk-php/captcha) package
@@ -29,5 +33,8 @@ information, see
 
 1. Create and get ***SecretId*** and ***SecretKey*** from [Tencent Cloud API](https://console.cloud.tencent.com/cam/capi)
 2. Create graphic captcha (图形验证) and get ***CaptchaAppId*** and ***AppSecretKey*** from [Tencent Cloud Captcha Graphic](https://console.cloud.tencent.com/captcha/graphical)
-3. Go to Tencent Cloud Captcha config page at */admin/config/people/captcha/tencentcloud_captcha* to fill above info and choose which forms to protect.
-4. (Optional) Goto Captcha config page at */admin/config/people/captcha* to implement to other forms.
+3. Go to Tencent Cloud Captcha config page at
+*/admin/config/people/captcha/tencentcloud_captcha* to fill above info and
+choose which forms to protect.
+4. (Optional) Goto Captcha config page at */admin/config/people/captcha*
+to implement to other forms.

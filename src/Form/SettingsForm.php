@@ -2,13 +2,41 @@
 
 namespace Drupal\tencentcloud_captcha\Form;
 
+use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Configure Tencentcloud Captcha settings.
  */
 class SettingsForm extends ConfigFormBase {
+
+  /**
+   * The module handler service.
+   *
+   * @var \Drupal\Core\Extension\ModuleHandlerInterface
+   */
+  protected $moduleHandler;
+
+  /**
+   * The form constructor.
+   *
+   * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
+   *   The module handler service.
+   */
+  public function __construct(ModuleHandlerInterface $module_handler) {
+    $this->moduleHandler = $module_handler;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('module_handler')
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -30,7 +58,7 @@ class SettingsForm extends ConfigFormBase {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $config = $this->config('tencentcloud_captcha.settings');
 
-    \Drupal::moduleHandler()->loadInclude('captcha', 'inc');
+    $this->moduleHandler->loadInclude('captcha', 'inc');
 
     $form['general'] = [
       '#type' => 'details',
@@ -121,7 +149,7 @@ class SettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    \Drupal::moduleHandler()->loadInclude('captcha', 'inc');
+    $this->moduleHandler->loadInclude('captcha', 'inc');
     $secret_id = $form_state->getValue('secret_id');
     $secret_key = $form_state->getValue('secret_key');
     $app_id = $form_state->getValue('app_id');
