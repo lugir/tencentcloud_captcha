@@ -2,7 +2,7 @@ tencentcloud_captcha:
   version: 1.0
   header: true
   js:
-    https://ssl.captcha.qq.com/TCaptcha.js: { type: external, minified: true }
+    https://turing.captcha.qcloud.com/TCaptcha.js: { type: external, minified: true }
 
 tencentcloud_captcha_prepare:
   header: true
